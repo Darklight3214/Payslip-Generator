@@ -1,0 +1,620 @@
+/* ═══════════════════════════════════════════════
+   PAYSLIP GENERATOR — Design System
+   Inspired by Zoho Payroll Payslip Generator
+   ═══════════════════════════════════════════════ */
+
+/* ── CSS Reset & Variables ──────────────────── */
+:root {
+  --color-bg: #f7f8fc;
+  --color-card: #ffffff;
+  --color-border: #f5eeeb;
+  --color-input-border: #e1ecfd;
+  --color-accent: #5b9aff;
+  --color-accent-hover: #4080e8;
+  --color-accent-light: #fbfcff;
+  --color-upload-border: #dbe8fd;
+  --color-text-primary: #1a1a2e;
+  --color-text-secondary: #555555;
+  --color-text-muted: #999999;
+  --color-text-placeholder: #aab0bc;
+  --color-success: #10b981;
+  --color-success-bg: #ecfdf5;
+  --color-error: #ef4444;
+  --color-error-bg: #fef2f2;
+  --color-save-gradient-start: #4f7df9;
+  --color-save-gradient-end: #6c5ce7;
+  --shadow-card: 0 4px 24px rgba(28, 29, 83, 0.06);
+  --shadow-card-hover: 0 8px 32px rgba(28, 29, 83, 0.1);
+  --shadow-btn: 0 4px 15px rgba(79, 125, 249, 0.35);
+  --shadow-btn-hover: 0 8px 25px rgba(79, 125, 249, 0.45);
+  --radius-card: 12px;
+  --radius-btn: 8px;
+  --radius-upload: 8px;
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* ── Top Navigation ─────────────────────────── */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.nav-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--color-accent);
+}
+
+.nav-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.3px;
+}
+
+.nav-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #f0f4ff;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-normal);
+}
+
+.nav-status.connected {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.nav-status.error {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  transition: background var(--transition-normal);
+  animation: pulse 2s infinite;
+}
+
+.nav-status.connected .status-dot {
+  background: var(--color-success);
+  animation: none;
+}
+
+.nav-status.error .status-dot {
+  background: var(--color-error);
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Main Container ─────────────────────────── */
+.main-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+/* ── Payslip Card ───────────────────────────── */
+.payslip-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 36px 40px 40px;
+  transition: box-shadow var(--transition-normal);
+  animation: cardSlideIn 0.5s ease-out;
+}
+
+.payslip-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Card Header ────────────────────────────── */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #f3f3f6;
+}
+
+.header-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* ── Upload Area ────────────────────────────── */
+.upload-area {
+  width: 120px;
+  height: 110px;
+  border: 1.5px dashed var(--color-upload-border);
+  border-radius: var(--radius-upload);
+  background: var(--color-accent-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all var(--transition-normal);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.upload-area:hover {
+  border-color: var(--color-accent);
+  background: #f0f5ff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(91, 154, 255, 0.12);
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.upload-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--color-accent);
+  transition: transform var(--transition-fast);
+}
+
+.upload-area:hover .upload-icon {
+  transform: translateY(-2px);
+}
+
+.upload-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.upload-preview {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.upload-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.remove-logo-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.upload-area:hover .remove-logo-btn {
+  opacity: 1;
+}
+
+/* ── Upload Specs ───────────────────────────── */
+.upload-specs {
+  padding-top: 8px;
+}
+
+.specs-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.specs-detail {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* ── Header Right (Payslip Month) ───────────── */
+.header-right {
+  text-align: right;
+  padding-top: 4px;
+}
+
+.payslip-month-label {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.payslip-month-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+}
+
+/* ── Company Form ───────────────────────────── */
+.company-form {
+  max-width: 520px;
+}
+
+.form-field {
+  margin-bottom: 4px;
+}
+
+.field-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px dashed var(--color-input-border);
+  padding: 10px 2px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  background: transparent;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.field-input::placeholder {
+  color: var(--color-text-placeholder);
+  font-weight: 400;
+}
+
+.field-input:hover {
+  border-bottom-color: var(--color-accent);
+}
+
+.field-input:focus {
+  border-bottom: 1.5px solid var(--color-accent);
+  color: var(--color-text-primary);
+}
+
+.field-company-name {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  padding: 12px 2px;
+}
+
+.field-company-name::placeholder {
+  font-weight: 400;
+  color: var(--color-text-placeholder);
+}
+
+.field-country {
+  color: var(--color-text-primary);
+  font-weight: 400;
+}
+
+/* ── City, Pincode Row ──────────────────────── */
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.field-half {
+  flex: 1;
+}
+
+.field-separator {
+  color: var(--color-text-muted);
+  padding: 0 4px;
+  font-size: 14px;
+  align-self: flex-end;
+  padding-bottom: 10px;
+}
+
+/* ── Save Section ───────────────────────────── */
+.save-section {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 36px;
+  border: none;
+  border-radius: var(--radius-btn);
+  background: linear-gradient(135deg, var(--color-save-gradient-start), var(--color-save-gradient-end));
+  color: #fff;
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-btn);
+  position: relative;
+  overflow: hidden;
+}
+
+.save-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-btn-hover);
+}
+
+.save-btn:hover::before {
+  left: 100%;
+}
+
+.save-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(79, 125, 249, 0.3);
+}
+
+.save-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.save-btn.loading {
+  pointer-events: none;
+}
+
+.save-icon {
+  transition: transform var(--transition-fast);
+}
+
+.save-btn:hover .save-icon {
+  transform: scale(1.1);
+}
+
+/* Loading spinner */
+.save-btn.loading .save-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Toast Notification ─────────────────────── */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transition: all var(--transition-normal);
+  z-index: 200;
+  max-width: 500px;
+  backdrop-filter: blur(8px);
+}
+
+.toast.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast.success {
+  background: var(--color-success-bg);
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.toast.error {
+  background: var(--color-error-bg);
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast-icon {
+  flex-shrink: 0;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: opacity var(--transition-fast);
+}
+
+.toast-close:hover {
+  opacity: 1;
+}
+
+/* ── Upload Error Styling ───────────────────── */
+.upload-area.error {
+  border-color: var(--color-error);
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ── Field Error State ──────────────────────── */
+.field-input.error {
+  border-bottom-color: var(--color-error);
+}
+
+/* ── Responsive ─────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-inner {
+    padding: 0 16px;
+  }
+
+  .main-container {
+    padding: 20px 16px 40px;
+  }
+
+  .payslip-card {
+    padding: 24px 20px 28px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .header-right {
+    text-align: left;
+  }
+
+  .payslip-month-value {
+    font-size: 22px;
+  }
+
+  .company-form {
+    max-width: 100%;
+  }
+
+  .save-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-left {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .upload-specs {
+    text-align: center;
+  }
+
+  .field-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .field-separator {
+    display: none;
+  }
+
+  .field-half {
+    width: 100%;
+  }
+}

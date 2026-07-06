@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Professional Payslip Generator — Create and manage employee payslips with ease.">
+  <title>Payslip Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <!-- ═══════════ Top Navigation Bar ═══════════ -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="18" rx="2"/>
+          <line x1="2" y1="8" x2="22" y2="8"/>
+          <line x1="8" y1="8" x2="8" y2="21"/>
+        </svg>
+        <span class="nav-title">Payslip Generator</span>
+      </div>
+      <div class="nav-status" id="connectionStatus">
+        <span class="status-dot"></span>
+        <span class="status-text">Connecting...</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════ Main Content ═══════════ -->
+  <main class="main-container">
+    <div class="payslip-card">
+      <!-- ── Header Section: Logo + Payslip Month ── -->
+      <div class="card-header">
+        <div class="header-left">
+          <!-- Upload Logo Area -->
+          <div class="upload-area" id="uploadArea">
+            <input type="file" id="logoInput" accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/webp" hidden>
+            <div class="upload-placeholder" id="uploadPlaceholder">
+              <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <span class="upload-label">Upload</span>
+            </div>
+            <div class="upload-preview" id="uploadPreview" style="display: none;">
+              <img id="previewImage" alt="Company Logo">
+              <button class="remove-logo-btn" id="removeLogo" title="Remove logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Upload specifications -->
+          <div class="upload-specs">
+            <h3 class="specs-title">Upload Logo</h3>
+            <p class="specs-detail">240 x 240 pixels @ 72 DPI,</p>
+            <p class="specs-detail">Maximum size of 1MB.</p>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <p class="payslip-month-label">Payslip For the Month</p>
+          <h2 class="payslip-month-value" id="currentMonth"></h2>
+        </div>
+      </div>
+
+      <!-- ── Company Details Form ── -->
+      <div class="company-form">
+        <div class="form-field">
+          <input
+            type="text"
+            id="companyName"
+            class="field-input field-company-name"
+            placeholder="Company Name*"
+            required
+          >
+        </div>
+        <div class="form-field">
+          <input
+            type="text"
+            id="companyAddress"
+            class="field-input"
+            placeholder="Company Address"
+          >
+        </div>
+        <div class="form-field field-row">
+          <input
+            type="text"
+            id="city"
+            class="field-input field-half"
+            placeholder="City"
+          >
+          <span class="field-separator">,</span>
+          <input
+            type="text"
+            id="pincode"
+            class="field-input field-half"
+            placeholder="Pincode"
+          >
+        </div>
+        <div class="form-field">
+          <input
+            type="text"
+            id="country"
+            class="field-input field-country"
+            value="India"
+            placeholder="Country"
+          >
+        </div>
+      </div>
+
+      <!-- ── Save Button ── -->
+      <div class="save-section">
+        <button class="save-btn" id="saveBtn" type="button">
+          <svg class="save-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l4 4v9a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+          <span id="saveBtnText">Save Company Details</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Toast notification ── -->
+    <div class="toast" id="toast">
+      <div class="toast-content">
+        <svg class="toast-icon" id="toastIcon" viewBox="0 0 24 24" width="20" height="20"></svg>
+        <span id="toastMessage"></span>
+      </div>
+      <button class="toast-close" id="toastClose">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </main>
+
+  <script src="index.js"></script>
+</body>
+</html>
