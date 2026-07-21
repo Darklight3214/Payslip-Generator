@@ -69,6 +69,58 @@ async function initDatabase() {
     `);
     console.log('✅ Table "companies" is ready');
 
+    // Payslips table
+    await appClient.query(`
+      CREATE TABLE IF NOT EXISTS payslips (
+        id                SERIAL PRIMARY KEY,
+        company_id        INTEGER REFERENCES companies(id) ON DELETE SET NULL,
+        employee_name     VARCHAR(255) NOT NULL,
+        employee_id       VARCHAR(50),
+        pay_period        VARCHAR(50),
+        paid_days         INTEGER DEFAULT 0,
+        lop_days          INTEGER DEFAULT 0,
+        pay_date          DATE,
+        gross_earnings    DECIMAL(12,2) DEFAULT 0,
+        total_deductions  DECIMAL(12,2) DEFAULT 0,
+        net_payable       DECIMAL(12,2) DEFAULT 0,
+        created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log('✅ Table "payslips" is ready');
+
+    // Payslip earnings line items
+    await appClient.query(`
+      CREATE TABLE IF NOT EXISTS payslip_earnings (
+        id          SERIAL PRIMARY KEY,
+        payslip_id  INTEGER REFERENCES payslips(id) ON DELETE CASCADE,
+        label       VARCHAR(255) NOT NULL,
+        amount      DECIMAL(12,2) DEFAULT 0
+      );
+    `);
+    console.log('✅ Table "payslip_earnings" is ready');
+
+    // Payslip deduction line items
+    await appClient.query(`
+      CREATE TABLE IF NOT EXISTS payslip_deductions (
+        id          SERIAL PRIMARY KEY,
+        payslip_id  INTEGER REFERENCES payslips(id) ON DELETE CASCADE,
+        label       VARCHAR(255) NOT NULL,
+        amount      DECIMAL(12,2) DEFAULT 0
+      );
+    `);
+    console.log('✅ Table "payslip_deductions" is ready');
+
+    // Custom employee fields
+    await appClient.query(`
+      CREATE TABLE IF NOT EXISTS payslip_custom_fields (
+        id          SERIAL PRIMARY KEY,
+        payslip_id  INTEGER REFERENCES payslips(id) ON DELETE CASCADE,
+        label       VARCHAR(255) NOT NULL,
+        value       TEXT
+      );
+    `);
+    console.log('✅ Table "payslip_custom_fields" is ready');
+
     // Verify table structure
     const tableInfo = await appClient.query(`
       SELECT column_name, data_type, character_maximum_length
